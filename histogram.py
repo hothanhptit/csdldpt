@@ -4,7 +4,7 @@ import cv2
 import math
 
 # read image
-image = cv2.imread('./venv/Images/image1.jpg')
+image = cv2.imread('./venv/Images/img/1.jpg')
 # # calculate mean value from RGB channels and flatten to 1D array
 # vals = im.mean(axis=2).flatten()
 # # calculate histogram
@@ -17,6 +17,8 @@ image = cv2.imread('./venv/Images/image1.jpg')
 # print (counts)
 # plt.show()
 
+# colors = ("red", "green", "blue", "orange", "yellow", "purple")
+# channel_ids = (0, 1, 2, 3, 4, 5)
 colors = ("red", "green", "blue")
 channel_ids = (0, 1, 2)
 
