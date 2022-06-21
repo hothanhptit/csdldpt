@@ -1,3 +1,4 @@
+import json
 import os
 from random import random
 from django.conf import settings
@@ -5,6 +6,7 @@ from django.shortcuts import render
 
 from datetime import datetime
 from PIL import Image
+import numpy as np
 from MY_DEMO.settings import BASE_DIR
 
 from Search.forms import SearchForm
@@ -27,14 +29,18 @@ def index(request):
             img.save(uploaded_img_path)
 
             # Trích xuất đặc trưng
-
+            feature = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             # Trả về kết quả
+            f = open('features.json')
+            features = json.load(f)
             folder = f"{STATIC_ROOT}"
             images = []
             for filename in os.listdir(folder):
                 img = os.path.join(folder, filename)
                 if img is not None:
-                    score = random()  # Khoảng cách euclidean
+                    score = np.linalg.norm(
+                        np.array(feature) - np.array(features[filename]))
                     images.append({"src": img, "score": score})
             images.sort(key=lambda x: x["score"], reverse=True)
             images = images[:30]
