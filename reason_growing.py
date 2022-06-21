@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as p
+import os
 
 # Định nghĩa lớp Point để nhận tọa độ các điểm ảnh
 # Các điểm này, sau này để chọn các điểm "hạt giống"
@@ -56,29 +57,22 @@ def regionGrow(img,seeds,thresh): # img: ảnh; seeds: danh sách điểm hạt 
      # Trả về ảnh có chứa các điểm hạt giống (được gán nhãn) là ảnh phân đoạn
     return seedMark
 
-if __name__ == "__main__":
-    for i in range(1,10):
+def regionGrowing(path, savePath):
         # Đọc ảnh
+        imgName = os.path.basename(path)
+        img = cv2.imread(path,0)
+        # imgName = imgName.split('.')[0]
+        # dir = f'./{imgName}'
+        # isExist = os.path.exists(dir)
+        # if not isExist:
+        #     os.makedirs(dir)
+        #     print("The new directory is created!")
+        # os.chdir(dir)
 
-        img = cv2.imread('./venv/Images/img/2.jpg',0)
         # img = cv2.imread(str(i) + '.jpg',0)
         # Chọn 3 điểm làm điểm hạt gống. Có thể chọn số điểm cho ảnh khác
         seeds = [Point(10, 10), Point(300, 400), Point(100, 300)]
         # Thực hiện tăng vùng bằng cách gọi hàm regionGrow
         img_result = regionGrow(img, seeds, 5)  #5: là giá trị ngưỡng, gía trị này thay đổi phụ thuộc ảnh ta quy định
-
-        fig = plt.figure(figsize=(16, 9))  # Tạo vùng vẽ tỷ lệ 16:9
-        #Tạo 2 vùng vẽ con
-        ax1, ax2 = fig.subplots(1, 2)
-
-        # Hiển thị ảnh gốc
-        ax1.imshow(img,cmap='gray')
-        ax1.set_title('Ảnh gốc')
-        ax1.axis('off')
-
-        # Hiển thị ảnh phân đoạn
-        ax2.imshow(img_result, cmap='gray')
-        ax2.set_title('Ảnh phân đoạn Region Growing')
-        ax2.axis('off')
-
-        plt.savefig("Phân đoạn ảnh region growing - Ảnh " + str(i) + '.jpg')
+        cv2.imwrite(savePath, img_result)
+        # cv2.imwrite(os.path.join(dir, f'{imgName}_reasonGrow.jpg'), img_result)
