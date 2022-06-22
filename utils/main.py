@@ -1,5 +1,5 @@
 from grayscale import grayScale
-from gaussFilter import gaussFilter
+from gaussFilter import median
 from reason_growing import regionGrowing
 from split import split
 from countPixel import countPixel
@@ -15,19 +15,20 @@ image_path = f'{ROOT_DIR}/Images'
 process_path = f'{ROOT_DIR}/ProcessedImages'
 writeData = {}
 
-for loopImg in range(1,112,1):
+for loopImg in range(1,2,1):
     vector = []
     euclidDistance = []
     vectorImg = []
 
     print(f"processing {loopImg}.jpg")
     grayScale(f'{image_path}/{loopImg}.jpg', f'{process_path}/{loopImg}')
-    gaussFilter(f'{image_path}/{loopImg}.jpg', process_path)
-    regionGrowing(f'{image_path}/{loopImg}.jpg', f'{process_path}/{loopImg}/{loopImg}_reason.jpg')
-    pixel = countPixel(f'{image_path}/{loopImg}.jpg')
+    median(f'{image_path}/{loopImg}.jpg', process_path)
+    regionGrowing(f'{image_path}/{loopImg}.jpg', f'{process_path}/{loopImg}/{loopImg}_region.jpg')
+    split(f'{process_path}/{loopImg}/{loopImg}_region.jpg', 1)
+    pixel = countPixel(f'{process_path}/{loopImg}/{loopImg}_region.jpg')
     square = pixel[0]/(pixel[1]+pixel[0])
     vector.append(square)
-    split(f'{image_path}/{loopImg}.jpg')
+    split(f'{process_path}/{loopImg}/{loopImg}_median.jpg', 0)
     # histogram
     for i in range(1, 17, 1):
         his = histogram(f'{process_path}/{loopImg}/{i}.jpg')
@@ -36,7 +37,7 @@ for loopImg in range(1,112,1):
 
     # position
     for i in range(1, 17, 1):
-        position = countPixel(f'{process_path}/{loopImg}/{i}.jpg')
+        position = countPixel(f'{process_path}/{loopImg}/{i}_re.jpg')
         if position[0]/(position[1] + 1) > 0.4:
             vector.append(1)
         else:

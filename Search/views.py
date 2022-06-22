@@ -34,8 +34,7 @@ def index(request):
             img.save(uploaded_img_path)
 
             # Trích xuất đặc trưng
-            feature = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+            feature = exactVector(uploaded_img_path)
             # Trả về kết quả
             f = open('/utils/features.json')
             features = json.load(f)

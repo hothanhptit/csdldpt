@@ -1,7 +1,7 @@
 import cv2
 import os
 # 640*360 -> split 4x4 -> 160x90
-def split(path):
+def split(path, isRegion):
     ROOT_DIR = os.path.abspath(os.curdir)
     img = cv2.imread(path)
     imgName = os.path.basename(path).split('.')[0]
@@ -16,9 +16,15 @@ def split(path):
     height = img.shape[0]
     width = img.shape[1]
     print ('width:', width,"\theight:", height)
-
-    for r in range(0,height,round(height/4)+1):
-        for c in range(0,width,round(width/4)+1):
-            cv2.imwrite(f'{dir}/{name}.jpg',img[r:r+round(height/4)+1, c:c+round(width/4)+1:])
-            name += 1
+    print(f'{imgName}')
+    if isRegion:
+        for r in range(0, height, round(height/4)+1):
+            for c in range(0, width, round(width/4)+1):
+                cv2.imwrite(f'{dir}/{name}_re.jpg', img[r:r+round(height/4)+1, c:c+round(width/4)+1:])
+                name += 1
+    else:
+        for r in range(0, height, round(height/4)+1):
+            for c in range(0, width, round(width/4)+1):
+                cv2.imwrite(f'{dir}/{name}.jpg', img[r:r+round(height/4)+1, c:c+round(width/4)+1:])
+                name += 1
     return
