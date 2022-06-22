@@ -3,13 +3,18 @@ import os
 from random import random
 from django.conf import settings
 from django.shortcuts import render
-
+import sys
 from datetime import datetime
 from PIL import Image
 import numpy as np
 from MY_DEMO.settings import BASE_DIR
 
 from Search.forms import SearchForm
+
+sys.path.insert(1, 'utils/exactVector.py')
+
+from exactVector import exactVector
+
 # Create your views here.
 
 STATIC_ROOT = os.path.join(BASE_DIR, "_data/")
@@ -32,7 +37,7 @@ def index(request):
             feature = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
             # Trả về kết quả
-            f = open('features.json')
+            f = open('/utils/features.json')
             features = json.load(f)
             folder = f"{STATIC_ROOT}"
             images = []
